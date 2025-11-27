@@ -1,19 +1,36 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import PageTransition from '@/components/PageTransition';
 import { useForm } from 'react-hook-form';
+import SuccessModal from '@/components/SuccessModal';
+import { sendEmail } from '@/app/actions/sendEmail';
 import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 
 export default function Contact() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const [isSending, setIsSending] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
-    const onSubmit = (data: any) => {
-        const { name, email, message } = data;
-        const subject = `Portfolio Contact from ${name}`;
-        const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
-        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=amalthilakan111@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        window.open(gmailUrl, '_blank');
+    const onSubmit = async (data: any) => {
+        setIsSending(true);
+
+        const formData = new FormData();
+        formData.append('name', data.name);
+        formData.append('email', data.email);
+        formData.append('message', data.message);
+
+        const result = await sendEmail(formData);
+
+        setIsSending(false);
+
+        if (result.success) {
+            setShowModal(true);
+            reset();
+        } else {
+            alert('Failed to send email. Please try again.');
+        }
     };
 
     return (
@@ -139,13 +156,19 @@ export default function Contact() {
 
                             <button
                                 type="submit"
-                                className="w-full py-3 px-6 bg-[#7C4DFF] text-white font-bold rounded-lg hover:bg-[#6c42e0] transition-colors shadow-lg shadow-[#7C4DFF]/30"
+                                disabled={isSending}
+                                className="w-full py-3 px-6 bg-[#7C4DFF] text-white font-bold rounded-lg hover:bg-[#6c42e0] transition-colors shadow-lg shadow-[#7C4DFF]/30 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
                             >
-                                Send Message
+                                {isSending ? (
+                                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                ) : (
+                                    "Send Message"
+                                )}
                             </button>
                         </form>
                     </motion.div>
                 </div>
+                <SuccessModal isOpen={showModal} onClose={() => setShowModal(false)} />
             </div>
         </PageTransition>
     );
