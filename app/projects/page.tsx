@@ -3,16 +3,27 @@
 import { motion } from 'framer-motion';
 import PageTransition from '@/components/PageTransition';
 import Image from 'next/image';
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt, FaAndroid } from 'react-icons/fa';
 
-const projects = [
+interface Project {
+    title: string;
+    description: string;
+    tags: string[];
+    image: string;
+    github: string;
+    live: string;
+    apk?: string;
+}
+
+const projects: Project[] = [
     {
         title: "FoodPin",
         description: "A mobile application to bookmark restaurants from maps to visit later.",
         tags: ["React Native", "Expo", "Google Maps"],
         image: "/splash-art.png",
         github: "https://github.com/amalthilakan",
-        live: "#"
+        live: "#",
+        apk: "/foodpin.apk"
     },
     {
         title: "Recipe Recommendation System",
@@ -111,6 +122,18 @@ export default function Projects() {
                                         </span>
                                     ))}
                                 </div>
+                                {project.apk && (
+                                    <div className="mt-6">
+                                        <a
+                                            href={project.apk}
+                                            download
+                                            className="inline-flex items-center gap-2 px-4 py-2 bg-[#7C4DFF] text-white rounded-lg hover:bg-[#6c42e0] transition-colors font-medium text-sm"
+                                        >
+                                            <FaAndroid size={18} />
+                                            Download App
+                                        </a>
+                                    </div>
+                                )}
                             </div>
                         </motion.div>
                     ))}
