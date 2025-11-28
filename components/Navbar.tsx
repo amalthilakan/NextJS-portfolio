@@ -18,6 +18,7 @@ const navLinks = [
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [theme, setTheme] = useState('dark');
+    const [isToolsOpen, setIsToolsOpen] = useState(false);
     const pathname = usePathname();
 
     useEffect(() => {
@@ -81,8 +82,8 @@ export default function Navbar() {
                                     <Link
                                         href={link.path}
                                         className={`block py-2 px-3 rounded md:p-0 transition-colors ${isActive
-                                                ? 'text-[#7C4DFF] font-bold'
-                                                : 'text-gray-900 dark:text-white hover:text-[#7C4DFF] dark:hover:text-[#7C4DFF]'
+                                            ? 'text-[#7C4DFF] font-bold'
+                                            : 'text-gray-900 dark:text-white hover:text-[#7C4DFF] dark:hover:text-[#7C4DFF]'
                                             }`}
                                         aria-current={isActive ? 'page' : undefined}
                                     >
@@ -91,6 +92,38 @@ export default function Navbar() {
                                 </li>
                             );
                         })}
+
+                        {/* Tools Dropdown */}
+                        <li className="relative group">
+                            <button
+                                className={`flex items-center py-2 px-3 rounded md:p-0 transition-colors text-gray-900 dark:text-white hover:text-[#7C4DFF] dark:hover:text-[#7C4DFF]`}
+                                onClick={() => setIsToolsOpen(!isToolsOpen)}
+                                onMouseEnter={() => setIsToolsOpen(true)}
+                            >
+                                Tools
+                                <svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
+                                </svg>
+                            </button>
+
+                            {/* Dropdown menu */}
+                            <div
+                                className={`absolute z-10 ${isToolsOpen ? 'block' : 'hidden'} font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600 pt-2`}
+                                onMouseLeave={() => setIsToolsOpen(false)}
+                            >
+                                <ul className="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+                                    <li>
+                                        <Link
+                                            href="/tools/color-palette-generator"
+                                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            onClick={() => setIsToolsOpen(false)}
+                                        >
+                                            Color Palette Generator
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -111,14 +144,47 @@ export default function Navbar() {
                                         href={link.path}
                                         onClick={() => setIsOpen(false)}
                                         className={`block py-2 px-3 rounded transition-colors ${pathname === link.path
-                                                ? 'text-[#7C4DFF] font-bold bg-gray-100 dark:bg-gray-800'
-                                                : 'text-gray-900 dark:text-white hover:text-[#7C4DFF]'
+                                            ? 'text-[#7C4DFF] font-bold bg-gray-100 dark:bg-gray-800'
+                                            : 'text-gray-900 dark:text-white hover:text-[#7C4DFF]'
                                             }`}
                                     >
                                         {link.name}
                                     </Link>
                                 </li>
                             ))}
+
+                            {/* Mobile Tools Section */}
+                            <li>
+                                <button
+                                    onClick={() => setIsToolsOpen(!isToolsOpen)}
+                                    className="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded dark:text-white hover:text-[#7C4DFF]"
+                                >
+                                    Tools
+                                    <svg className={`w-2.5 h-2.5 ms-2.5 transition-transform ${isToolsOpen ? 'rotate-180' : ''}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
+                                    </svg>
+                                </button>
+                                <AnimatePresence>
+                                    {isToolsOpen && (
+                                        <motion.ul
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{ opacity: 1, height: 'auto' }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                            className="py-2 space-y-2 pl-6"
+                                        >
+                                            <li>
+                                                <Link
+                                                    href="/tools/color-palette-generator"
+                                                    onClick={() => setIsOpen(false)}
+                                                    className="block py-2 px-3 text-gray-900 rounded dark:text-white hover:text-[#7C4DFF] dark:hover:bg-gray-700"
+                                                >
+                                                    Color Palette Generator
+                                                </Link>
+                                            </li>
+                                        </motion.ul>
+                                    )}
+                                </AnimatePresence>
+                            </li>
                         </ul>
                     </motion.div>
                 )}

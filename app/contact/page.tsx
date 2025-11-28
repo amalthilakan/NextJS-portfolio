@@ -79,16 +79,6 @@ export default function Contact() {
                                     </a>
                                 </div>
                             </div>
-
-                            <div className="flex items-center gap-4">
-                                <div className="p-4 bg-[#7C4DFF]/10 text-[#7C4DFF] rounded-full">
-                                    <FaMapMarkerAlt size={20} />
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold">Address</h3>
-                                    <p className="text-gray-500 dark:text-gray-400">Thuruthelil House, Muppatadam P.O, 683110</p>
-                                </div>
-                            </div>
                         </div>
 
                         <div className="pt-8">
