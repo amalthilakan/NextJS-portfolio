@@ -23,7 +23,7 @@ const projects: Project[] = [
         image: "/splash-art.png",
         github: "https://github.com/amalthilakan",
         live: "#",
-        apk: "/foodpin-v-1.0.4.apk"
+        apk: "/foodpin-v-1.0.6.apk"
     },
     {
         title: "Recipe Recommendation System",
