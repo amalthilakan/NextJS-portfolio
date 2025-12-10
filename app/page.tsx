@@ -59,7 +59,7 @@ export default function Home() {
               Hire Me <HiArrowRight />
             </Link>
             <a
-              href="/amalResumeNov25.pdf"
+              href="/AmalResumeATS.pdf"
               download
               className="px-8 py-3 rounded-full border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
             >
