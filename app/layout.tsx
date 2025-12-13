@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import SongPlayer from '@/components/SongPlayer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -43,6 +44,7 @@ export default function RootLayout({
         <main className="flex-grow pt-20 px-4 container mx-auto">
           {children}
         </main>
+        <SongPlayer />
         <Footer />
       </body>
     </html>
