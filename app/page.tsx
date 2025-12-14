@@ -9,6 +9,7 @@ import { CardContainer, CardItem, CardBody } from '@/components/ui/3d-card';
 import { EncryptedText } from '@/components/ui/encrypted-text';
 import Footer from '@/components/Footer';
 import { FloatingDock } from '@/components/ui/floating-dock';
+import ResumeButton from '@/components/ResumeButton';
 import { IconBrandGithub, IconPalette, IconBrandInstagram, IconBrandLinkedin } from '@tabler/icons-react';
 
 export default function Home() {
@@ -64,7 +65,7 @@ export default function Home() {
             </motion.h2>
             <EncryptedText
               text="AMAL THILAKAN"
-              className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400"
+              className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-linear-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400"
               revealDelayMs={70}
             />
             <motion.h3
@@ -97,20 +98,14 @@ export default function Home() {
               >
                 Hire Me <HiArrowRight />
               </Link>
-              <a
-                href="/AmalResumeATS.pdf"
-                download
-                className="px-8 py-3 rounded-full border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
-              >
-                Download Resume <HiDownload />
-              </a>
+              <ResumeButton />
             </motion.div>
           </div>
 
           {/* Image */}
           <div className="flex-1 order-1 md:order-2 flex justify-center">
             <CardContainer className="inter-var">
-              <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-[#7C4DFF]/[0.2] dark:bg-gray-900 dark:border-white/[0.2] border-2 border-gray-200 w-[280px] sm:w-[320px] md:w-[380px] h-auto rounded-2xl p-0 overflow-hidden">
+              <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-[#7C4DFF]/20 dark:bg-gray-900 dark:border-white/20 border-2 border-gray-200 w-[280px] sm:w-[320px] md:w-[380px] h-auto rounded-2xl p-0 overflow-hidden">
                 <CardItem
                   translateZ="100"
                   className="w-full"

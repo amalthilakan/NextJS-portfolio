@@ -32,7 +32,6 @@ export default function Contact() {
             alert('Failed to send email. Please try again.');
         }
     };
-
     return (
         <PageTransition>
             <div className="max-w-6xl mx-auto py-10">

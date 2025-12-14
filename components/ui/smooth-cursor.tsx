@@ -84,8 +84,8 @@ export function SmoothCursor({
   cursor = <DefaultCursorSVG />,
   springConfig = {
     damping: 45,
-    stiffness: 400,
-    mass: 1,
+    stiffness: 1000,
+    mass: 0.5,
     restDelta: 0.001,
   },
 }: SmoothCursorProps) {
