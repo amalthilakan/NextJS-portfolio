@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
+    { name: 'Skills', path: '/skills' },
     { name: 'Projects', path: '/projects' },
     { name: 'Experience', path: '/experience' },
     { name: 'Contact', path: '/contact' },
@@ -20,7 +21,7 @@ const navLinks = [
 export default function Navbar({ className }: { className?: string }) {
     const [active, setActive] = useState<string | null>(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
+
     const pathname = usePathname();
 
     return (
@@ -52,14 +53,7 @@ export default function Navbar({ className }: { className?: string }) {
                             </Link>
                         ))}
 
-                        {/* Tools Dropdown */}
-                        <MenuItem setActive={setActive} active={active} item="Tools">
-                            <div className="flex flex-col space-y-4 text-sm">
-                                <HoveredLink href="/tools/color-palette-generator">
-                                    Color Palette Generator
-                                </HoveredLink>
-                            </div>
-                        </MenuItem>
+
                     </div>
 
                     {/* Right Side - Theme Toggle */}
@@ -127,46 +121,7 @@ export default function Navbar({ className }: { className?: string }) {
                                     </li>
                                 ))}
 
-                                {/* Mobile Tools Section */}
-                                <li>
-                                    <button
-                                        onClick={() => setMobileToolsOpen(!mobileToolsOpen)}
-                                        className="flex items-center justify-between w-full py-3 px-4 rounded-lg text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                                    >
-                                        Tools
-                                        <svg
-                                            className={cn(
-                                                "w-4 h-4 transition-transform",
-                                                mobileToolsOpen && "rotate-180"
-                                            )}
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                        >
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                        </svg>
-                                    </button>
-                                    <AnimatePresence>
-                                        {mobileToolsOpen && (
-                                            <motion.ul
-                                                initial={{ opacity: 0, height: 0 }}
-                                                animate={{ opacity: 1, height: 'auto' }}
-                                                exit={{ opacity: 0, height: 0 }}
-                                                className="overflow-hidden ml-4 mt-1 space-y-1"
-                                            >
-                                                <li>
-                                                    <Link
-                                                        href="/tools/color-palette-generator"
-                                                        onClick={() => setMobileMenuOpen(false)}
-                                                        className="block py-2 px-4 rounded-lg text-gray-600 dark:text-gray-300 hover:text-[#7C4DFF] dark:hover:text-[#7C4DFF] hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                                                    >
-                                                        Color Palette Generator
-                                                    </Link>
-                                                </li>
-                                            </motion.ul>
-                                        )}
-                                    </AnimatePresence>
-                                </li>
+
                             </ul>
                         </motion.div>
                     )}

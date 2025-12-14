@@ -88,7 +88,7 @@ export default function Contact() {
                                     href="https://github.com/amalthilakan"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="p-3 bg-white/5 border border-white/10 rounded-full hover:bg-[#7C4DFF] hover:text-white transition-all hover:scale-110"
+                                    className="p-3 bg-white/5 border border-gray-200 dark:border-white/10 rounded-full hover:bg-[#7C4DFF] hover:text-white transition-all hover:scale-110"
                                 >
                                     <FaGithub size={24} />
                                 </a>
@@ -97,7 +97,7 @@ export default function Contact() {
                                     href="#"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="p-3 bg-white/5 border border-white/10 rounded-full hover:bg-[#0077b5] hover:text-white transition-all hover:scale-110"
+                                    className="p-3 bg-white/5 border border-gray-200 dark:border-white/10 rounded-full hover:bg-[#0077b5] hover:text-white transition-all hover:scale-110"
                                 >
                                     <FaLinkedin size={24} />
                                 </a>
@@ -110,7 +110,7 @@ export default function Contact() {
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.4 }}
-                        className="bg-white/5 dark:bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-white/10"
+                        className="bg-white/5 dark:bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-gray-200 dark:border-white/10"
                     >
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                             <div>

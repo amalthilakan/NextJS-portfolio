@@ -2,35 +2,6 @@
 
 import { motion } from 'framer-motion';
 import PageTransition from '@/components/PageTransition';
-import { FaPython, FaJava, FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs, FaDatabase, FaGitAlt } from 'react-icons/fa';
-import { SiTypescript, SiDjango, SiMongodb, SiSqlite, SiTensorflow, SiPandas, SiAxios } from 'react-icons/si';
-import { VscVscode } from 'react-icons/vsc';
-import { TbApi, TbBrandReactNative } from 'react-icons/tb';
-
-const skills = [
-    { name: 'Python', icon: FaPython, category: 'Languages' },
-    { name: 'Java', icon: FaJava, category: 'Languages' },
-    { name: 'JavaScript', icon: FaJs, category: 'Languages' },
-    { name: 'TypeScript', icon: SiTypescript, category: 'Languages' },
-    { name: 'C/C++', icon: null, category: 'Languages' }, // No icon for C/C++ in standard set, using text fallback or generic
-    { name: 'HTML5', icon: FaHtml5, category: 'Frontend' },
-    { name: 'CSS3', icon: FaCss3Alt, category: 'Frontend' },
-    { name: 'React', icon: FaReact, category: 'Frontend' },
-    { name: 'Redux', icon: null, category: 'Frontend' },
-    { name: 'Node.js', icon: FaNodeJs, category: 'Backend' },
-    { name: 'Express', icon: null, category: 'Backend' },
-    { name: 'Django', icon: SiDjango, category: 'Backend' },
-    { name: 'SQL', icon: FaDatabase, category: 'Database' },
-    { name: 'MongoDB', icon: SiMongodb, category: 'Database' },
-    { name: 'SQLite', icon: SiSqlite, category: 'Database' },
-    { name: 'Git', icon: FaGitAlt, category: 'Tools' },
-    { name: 'VS Code', icon: VscVscode, category: 'Tools' },
-    { name: 'Machine Learning', icon: SiTensorflow, category: 'Data Science' },
-    { name: 'Data Analysis', icon: SiPandas, category: 'Data Science' },
-    { name: 'React Native', icon: TbBrandReactNative, category: 'Frontend' },
-    { name: 'Axios', icon: SiAxios, category: 'Frontend' },
-    { name: 'REST API', icon: TbApi, category: 'Backend' },
-];
 
 const education = [
     {
@@ -64,7 +35,7 @@ export default function About() {
 
                 {/* Bio Section */}
                 <motion.div
-                    className="bg-white/5 dark:bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-white/10 mb-12"
+                    className="bg-white/5 dark:bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-gray-200 dark:border-white/10 mb-12"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
@@ -78,6 +49,7 @@ export default function About() {
 
                 {/* Education Section */}
                 <motion.h2
+                    id="education"
                     className="text-2xl font-bold mb-6 text-[#7C4DFF]"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -85,11 +57,11 @@ export default function About() {
                 >
                     Education
                 </motion.h2>
-                <div className="space-y-6 mb-12">
+                <div className="space-y-6">
                     {education.map((edu, index) => (
                         <motion.div
                             key={index}
-                            className="flex flex-col md:flex-row md:items-center justify-between p-6 bg-white/5 rounded-xl border border-white/10 hover:border-[#7C4DFF]/50 transition-colors"
+                            className="flex flex-col md:flex-row md:items-center justify-between p-6 bg-white/5 rounded-xl border border-gray-200 dark:border-white/10 hover:border-[#7C4DFF]/50 transition-colors"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4 + index * 0.1 }}
@@ -101,32 +73,6 @@ export default function About() {
                             <span className="mt-2 md:mt-0 px-4 py-1 bg-[#7C4DFF]/10 text-[#7C4DFF] rounded-full text-sm font-medium">
                                 {edu.year}
                             </span>
-                        </motion.div>
-                    ))}
-                </div>
-
-                {/* Skills Section */}
-                <motion.h2
-                    className="text-2xl font-bold mb-6 text-[#7C4DFF]"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.6 }}
-                >
-                    Skills
-                </motion.h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {skills.map((skill, index) => (
-                        <motion.div
-                            key={index}
-                            className="flex flex-col items-center justify-center p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all hover:scale-105"
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.7 + index * 0.05 }}
-                        >
-                            <div className="text-3xl mb-2 text-[#7C4DFF]">
-                                {skill.icon ? <skill.icon /> : <span className="text-xl font-bold">{'</>'}</span>}
-                            </div>
-                            <span className="font-medium text-sm">{skill.name}</span>
                         </motion.div>
                     ))}
                 </div>
