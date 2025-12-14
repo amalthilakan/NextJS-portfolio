@@ -129,7 +129,7 @@ export default function Home() {
           </div>
 
         </div>
-        <div className="flex items-center justify-center mb-10">
+        <div className="flex items-center justify-center mb-5 mt-5">
           <FloatingDock
             items={links}
           />
