@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { HiDownload, HiArrowRight } from 'react-icons/hi';
 import PageTransition from '@/components/PageTransition';
 import { CardContainer, CardItem, CardBody } from '@/components/ui/3d-card';
+import { EncryptedText } from '@/components/ui/encrypted-text';
 
 export default function Home() {
   return (
@@ -21,14 +22,11 @@ export default function Home() {
           >
             Hello, I'm
           </motion.h2>
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, type: 'spring' }}
+          <EncryptedText
+            text="AMAL THILAKAN"
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400"
-          >
-            Amal Thilakan
-          </motion.h1>
+            revealDelayMs={70}
+          />
           <motion.h3
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -70,24 +68,6 @@ export default function Home() {
         </div>
 
         {/* Image */}
-        {/* <motion.div
-          initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-          className="flex-1 order-1 md:order-2 flex justify-center"
-        >
-          <div className="relative w-64 h-64 md:w-96 md:h-96">
-            <div className="absolute inset-0 bg-[#7C4DFF] rounded-full blur-3xl opacity-20 animate-pulse"></div>
-            <Image
-              src="/profile.jpg"
-              alt="Amal Thilakan"
-              fill
-              className="object-cover rounded-full border-4 border-white dark:border-gray-800 shadow-2xl relative z-10"
-              priority
-            />
-          </div>
-        </motion.div> */}
-        {/* 3D Card - Right Side */}
         <div className="flex-1 order-1 md:order-2 flex justify-center">
           <CardContainer className="inter-var">
             <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-[#7C4DFF]/[0.2] dark:bg-gray-900 dark:border-white/[0.2] border-black/[0.1] w-[280px] sm:w-[320px] md:w-[380px] h-auto rounded-2xl p-0 border overflow-hidden">
