@@ -67,7 +67,7 @@ export default function ColorPaletteGenerator() {
     };
 
     return (
-        <div className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-black transition-colors duration-300">
+        <div className="fixed inset-0 pt-32 md:pt-28 pb-12 px-4 sm:px-6 lg:px-8 bg-gray-100 dark:bg-gray-950 overflow-y-auto">
             <Toaster position="bottom-center" />
 
             <div className="max-w-7xl mx-auto">

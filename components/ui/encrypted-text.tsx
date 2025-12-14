@@ -28,144 +28,144 @@ const DEFAULT_CHARSET =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-={}[];:,.<>/?";
 
 function generateRandomCharacter(charset: string): string {
-  const index = Math.floor(Math.random() * charset.length);
-  return charset.charAt(index);
+    const index = Math.floor(Math.random() * charset.length);
+    return charset.charAt(index);
 }
 
 function generateGibberishPreservingSpaces(
-  original: string,
-  charset: string,
+    original: string,
+    charset: string,
 ): string {
-  if (!original) return "";
-  let result = "";
-  for (let i = 0; i < original.length; i += 1) {
-    const ch = original[i];
-    result += ch === " " ? " " : generateRandomCharacter(charset);
-  }
-  return result;
+    if (!original) return "";
+    let result = "";
+    for (let i = 0; i < original.length; i += 1) {
+        const ch = original[i];
+        result += ch === " " ? " " : generateRandomCharacter(charset);
+    }
+    return result;
 }
 
 export const EncryptedText: React.FC<EncryptedTextProps> = ({
-  text,
-  className,
-  revealDelayMs = 50,
-  charset = DEFAULT_CHARSET,
-  flipDelayMs = 50,
-  encryptedClassName,
-  revealedClassName,
+    text,
+    className,
+    revealDelayMs = 50,
+    charset = DEFAULT_CHARSET,
+    flipDelayMs = 50,
+    encryptedClassName,
+    revealedClassName,
 }) => {
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true });
+    const ref = useRef<HTMLSpanElement>(null);
+    const isInView = useInView(ref, { once: true });
 
-  const [mounted, setMounted] = useState(false);
-  const [revealCount, setRevealCount] = useState<number>(0);
-  const animationFrameRef = useRef<number | null>(null);
-  const startTimeRef = useRef<number>(0);
-  const lastFlipTimeRef = useRef<number>(0);
-  const scrambleCharsRef = useRef<string[]>(
-    text ? text.split("") : [], // Initialize with actual text to avoid hydration mismatch
-  );
+    const [mounted, setMounted] = useState(false);
+    const [revealCount, setRevealCount] = useState<number>(0);
+    const animationFrameRef = useRef<number | null>(null);
+    const startTimeRef = useRef<number>(0);
+    const lastFlipTimeRef = useRef<number>(0);
+    const scrambleCharsRef = useRef<string[]>(
+        text ? text.split("") : [], // Initialize with actual text to avoid hydration mismatch
+    );
 
-  // Mark as mounted on client
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+    // Mark as mounted on client
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
-  useEffect(() => {
-    if (!isInView || !mounted) return;
+    useEffect(() => {
+        if (!isInView || !mounted) return;
 
-    // Reset state for a fresh animation whenever dependencies change
-    const initial = text
-      ? generateGibberishPreservingSpaces(text, charset)
-      : "";
-    scrambleCharsRef.current = initial.split("");
-    startTimeRef.current = performance.now();
-    lastFlipTimeRef.current = startTimeRef.current;
-    setRevealCount(0);
+        // Reset state for a fresh animation whenever dependencies change
+        const initial = text
+            ? generateGibberishPreservingSpaces(text, charset)
+            : "";
+        scrambleCharsRef.current = initial.split("");
+        startTimeRef.current = performance.now();
+        lastFlipTimeRef.current = startTimeRef.current;
+        setRevealCount(0);
 
-    let isCancelled = false;
+        let isCancelled = false;
 
-    const update = (now: number) => {
-      if (isCancelled) return;
+        const update = (now: number) => {
+            if (isCancelled) return;
 
-      const elapsedMs = now - startTimeRef.current;
-      const totalLength = text.length;
-      const currentRevealCount = Math.min(
-        totalLength,
-        Math.floor(elapsedMs / Math.max(1, revealDelayMs)),
-      );
+            const elapsedMs = now - startTimeRef.current;
+            const totalLength = text.length;
+            const currentRevealCount = Math.min(
+                totalLength,
+                Math.floor(elapsedMs / Math.max(1, revealDelayMs)),
+            );
 
-      setRevealCount(currentRevealCount);
+            setRevealCount(currentRevealCount);
 
-      if (currentRevealCount >= totalLength) {
-        return;
-      }
-
-      // Re-randomize unrevealed scramble characters on an interval
-      const timeSinceLastFlip = now - lastFlipTimeRef.current;
-      if (timeSinceLastFlip >= Math.max(0, flipDelayMs)) {
-        for (let index = 0; index < totalLength; index += 1) {
-          if (index >= currentRevealCount) {
-            if (text[index] !== " ") {
-              scrambleCharsRef.current[index] =
-                generateRandomCharacter(charset);
-            } else {
-              scrambleCharsRef.current[index] = " ";
+            if (currentRevealCount >= totalLength) {
+                return;
             }
-          }
-        }
-        lastFlipTimeRef.current = now;
-      }
 
-      animationFrameRef.current = requestAnimationFrame(update);
-    };
+            // Re-randomize unrevealed scramble characters on an interval
+            const timeSinceLastFlip = now - lastFlipTimeRef.current;
+            if (timeSinceLastFlip >= Math.max(0, flipDelayMs)) {
+                for (let index = 0; index < totalLength; index += 1) {
+                    if (index >= currentRevealCount) {
+                        if (text[index] !== " ") {
+                            scrambleCharsRef.current[index] =
+                generateRandomCharacter(charset);
+                        } else {
+                            scrambleCharsRef.current[index] = " ";
+                        }
+                    }
+                }
+                lastFlipTimeRef.current = now;
+            }
 
-    animationFrameRef.current = requestAnimationFrame(update);
+            animationFrameRef.current = requestAnimationFrame(update);
+        };
 
-    return () => {
-      isCancelled = true;
-      if (animationFrameRef.current !== null) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, [isInView, mounted, text, revealDelayMs, charset, flipDelayMs]);
+        animationFrameRef.current = requestAnimationFrame(update);
 
-  if (!text) return null;
+        return () => {
+            isCancelled = true;
+            if (animationFrameRef.current !== null) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
+        };
+    }, [isInView, mounted, text, revealDelayMs, charset, flipDelayMs]);
 
-  return (
-    <motion.span
-      ref={ref}
-      className={cn(className)}
-      aria-label={text}
-      role="text"
-    >
-      {text.split("").map((char, index) => {
-        // Before mounting, show actual text to match server render
-        if (!mounted) {
-          return (
-            <span key={index} className={cn(revealedClassName)}>
-              {char}
-            </span>
-          );
-        }
+    if (!text) return null;
 
-        const isRevealed = index < revealCount;
-        const displayChar = isRevealed
-          ? char
-          : char === " "
-            ? " "
-            : (scrambleCharsRef.current[index] ??
+    return (
+        <motion.span
+            ref={ref}
+            className={cn(className)}
+            aria-label={text}
+            role="text"
+        >
+            {text.split("").map((char, index) => {
+                // Before mounting, show actual text to match server render
+                if (!mounted) {
+                    return (
+                        <span key={index} className={cn(revealedClassName)}>
+                            {char}
+                        </span>
+                    );
+                }
+
+                const isRevealed = index < revealCount;
+                const displayChar = isRevealed
+                    ? char
+                    : char === " "
+                        ? " "
+                        : (scrambleCharsRef.current[index] ??
               generateRandomCharacter(charset));
 
-        return (
-          <span
-            key={index}
-            className={cn(isRevealed ? revealedClassName : encryptedClassName)}
-          >
-            {displayChar}
-          </span>
-        );
-      })}
-    </motion.span>
-  );
+                return (
+                    <span
+                        key={index}
+                        className={cn(isRevealed ? revealedClassName : encryptedClassName)}
+                    >
+                        {displayChar}
+                    </span>
+                );
+            })}
+        </motion.span>
+    );
 };
