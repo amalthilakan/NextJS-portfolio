@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { HiDownload, HiArrowRight } from 'react-icons/hi';
 import PageTransition from '@/components/PageTransition';
+import { CardContainer, CardItem, CardBody } from '@/components/ui/3d-card';
 
 export default function Home() {
   return (
@@ -69,7 +70,7 @@ export default function Home() {
         </div>
 
         {/* Image */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ delay: 0.3, duration: 0.6 }}
@@ -85,7 +86,27 @@ export default function Home() {
               priority
             />
           </div>
-        </motion.div>
+        </motion.div> */}
+        {/* 3D Card - Right Side */}
+        <div className="flex-1 order-1 md:order-2 flex justify-center">
+          <CardContainer className="inter-var">
+            <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-[#7C4DFF]/[0.2] dark:bg-gray-900 dark:border-white/[0.2] border-black/[0.1] w-[280px] sm:w-[320px] md:w-[380px] h-auto rounded-2xl p-0 border overflow-hidden">
+              <CardItem
+                translateZ="100"
+                className="w-full"
+              >
+                <Image
+                  src="/profile.jpg"
+                  alt="Amal Thilakan"
+                  width={380}
+                  height={480}
+                  className="w-full h-[350px] sm:h-[400px] md:h-[450px] object-cover object-top -mb-5 group-hover/card:shadow-xl"
+                  priority
+                />
+              </CardItem>
+            </CardBody>
+          </CardContainer>
+        </div>
       </div>
     </PageTransition>
   );
