@@ -70,7 +70,7 @@ export default function Home() {
               transition={{ delay: 0.1 }}
               className="text-xl md:text-2xl font-medium text-[#7C4DFF] mb-2"
             >
-              Hello, I'm
+              Hello, I&apos;m
             </motion.h2>
             <EncryptedText
               text="AMAL THILAKAN"
@@ -90,7 +90,7 @@ export default function Home() {
               className="text-gray-500 dark:text-gray-400 max-w-lg mx-auto md:mx-0 mb-8 leading-relaxed"
             >
               I build exceptional digital experiences that are fast, accessible, and visually stunning.
-              Specializing in full-stack development and data science solutions.
+              Specializing in full-stack development and Native App development.
             </motion.p>
 
             <motion.div
