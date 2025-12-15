@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import SuccessModal from '@/components/SuccessModal';
 import { sendEmail } from '@/app/actions/sendEmail';
-import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaEnvelope, FaPhone } from 'react-icons/fa';
 import { ContactFormData } from '@/types/contact';
 import { fadeInDown, slideInLeft, slideInRight } from '@/lib/animations';
 
@@ -54,7 +54,7 @@ export default function Contact() {
                     >
                         <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
                         <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                            I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.
+                            I&apos;m always open to discussing new projects, creative ideas or opportunities to be part of your visions.
                         </p>
 
                         <div className="space-y-6">
