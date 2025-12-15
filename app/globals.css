@@ -136,3 +136,16 @@ textarea,
 select {
   cursor: text !important;
 }
+
+/* Visible focus states for keyboard navigation */
+:focus-visible {
+  outline: 2px solid #7C4DFF;
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #7C4DFF;
+  outline-offset: 2px;
+  border-radius: 4px;
+}

@@ -11,7 +11,7 @@ import React, {
 } from "react";
 
 const MouseEnterContext = createContext<
-  [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
+    [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
 >(undefined);
 
 export const CardContainer = ({
@@ -19,9 +19,9 @@ export const CardContainer = ({
     className,
     containerClassName,
 }: {
-  children?: React.ReactNode;
-  className?: string;
-  containerClassName?: string;
+    children?: React.ReactNode;
+    className?: string;
+    containerClassName?: string;
 }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [isMouseEntered, setIsMouseEntered] = useState(false);
@@ -29,7 +29,7 @@ export const CardContainer = ({
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!containerRef.current) return;
         const { left, top, width, height } =
-      containerRef.current.getBoundingClientRect();
+            containerRef.current.getBoundingClientRect();
         const x = (e.clientX - left - width / 2) / 25;
         const y = (e.clientY - top - height / 2) / 25;
         containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
@@ -80,13 +80,13 @@ export const CardBody = ({
     children,
     className,
 }: {
-  children: React.ReactNode;
-  className?: string;
+    children: React.ReactNode;
+    className?: string;
 }) => {
     return (
         <div
             className={cn(
-                "h-96 w-96 [transform-style:preserve-3d]  [&>*]:[transform-style:preserve-3d]",
+                "h-96 w-96 transform-3d  *:transform-3d",
                 className
             )}
         >
@@ -107,16 +107,16 @@ export const CardItem = ({
     rotateZ = 0,
     ...rest
 }: {
-  as?: React.ElementType;
-  children: React.ReactNode;
-  className?: string;
-  translateX?: number | string;
-  translateY?: number | string;
-  translateZ?: number | string;
-  rotateX?: number | string;
-  rotateY?: number | string;
-  rotateZ?: number | string;
-  [key: string]: any;
+    as?: React.ElementType;
+    children: React.ReactNode;
+    className?: string;
+    translateX?: number | string;
+    translateY?: number | string;
+    translateZ?: number | string;
+    rotateX?: number | string;
+    rotateY?: number | string;
+    rotateZ?: number | string;
+    [key: string]: any;
 }) => {
     const ref = useRef<HTMLDivElement>(null);
     const [isMouseEntered] = useMouseEnter();

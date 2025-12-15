@@ -1,31 +1,31 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "motion/react";
+import { motion, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 type EncryptedTextProps = {
-  text: string;
-  className?: string;
-  /**
-   * Time in milliseconds between revealing each subsequent real character.
-   * Lower is faster. Defaults to 50ms per character.
-   */
-  revealDelayMs?: number;
-  /** Optional custom character set to use for the gibberish effect. */
-  charset?: string;
-  /**
-   * Time in milliseconds between gibberish flips for unrevealed characters.
-   * Lower is more jittery. Defaults to 50ms.
-   */
-  flipDelayMs?: number;
-  /** CSS class for styling the encrypted/scrambled characters */
-  encryptedClassName?: string;
-  /** CSS class for styling the revealed characters */
-  revealedClassName?: string;
+    text: string;
+    className?: string;
+    /**
+     * Time in milliseconds between revealing each subsequent real character.
+     * Lower is faster. Defaults to 50ms per character.
+     */
+    revealDelayMs?: number;
+    /** Optional custom character set to use for the gibberish effect. */
+    charset?: string;
+    /**
+     * Time in milliseconds between gibberish flips for unrevealed characters.
+     * Lower is more jittery. Defaults to 50ms.
+     */
+    flipDelayMs?: number;
+    /** CSS class for styling the encrypted/scrambled characters */
+    encryptedClassName?: string;
+    /** CSS class for styling the revealed characters */
+    revealedClassName?: string;
 };
 
 const DEFAULT_CHARSET =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-={}[];:,.<>/?";
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-={}[];:,.<>/?";
 
 function generateRandomCharacter(charset: string): string {
     const index = Math.floor(Math.random() * charset.length);
@@ -108,7 +108,7 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
                     if (index >= currentRevealCount) {
                         if (text[index] !== " ") {
                             scrambleCharsRef.current[index] =
-                generateRandomCharacter(charset);
+                                generateRandomCharacter(charset);
                         } else {
                             scrambleCharsRef.current[index] = " ";
                         }
@@ -155,7 +155,7 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
                     : char === " "
                         ? " "
                         : (scrambleCharsRef.current[index] ??
-              generateRandomCharacter(charset));
+                            generateRandomCharacter(charset));
 
                 return (
                     <span
