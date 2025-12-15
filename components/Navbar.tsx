@@ -34,7 +34,11 @@ export default function Navbar({ className }: { className?: string }) {
             </Link>
 
             {/* Desktop Navbar - Floating Pill Style */}
-            <div className={cn("fixed top-6 inset-x-0 max-w-3xl mx-auto z-50 px-4 hidden md:block", className)}>
+            <div
+                className={cn("fixed top-6 inset-x-0 max-w-3xl mx-auto z-50 px-4 hidden md:block", className)}
+                role="navigation"
+                aria-label="Main navigation"
+            >
                 <Menu setActive={setActive}>
                     {/* Left Side - Navigation Links */}
                     <div className="flex items-center space-x-6">
@@ -83,12 +87,14 @@ export default function Navbar({ className }: { className?: string }) {
                         <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                            aria-label="Toggle Menu"
+                            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                            aria-expanded={mobileMenuOpen}
+                            aria-controls="mobile-navigation"
                         >
                             {mobileMenuOpen ? (
-                                <HiX size={24} className="text-gray-900 dark:text-white" />
+                                <HiX size={24} className="text-gray-900 dark:text-white" aria-hidden="true" />
                             ) : (
-                                <HiMenuAlt3 size={24} className="text-gray-900 dark:text-white" />
+                                <HiMenuAlt3 size={24} className="text-gray-900 dark:text-white" aria-hidden="true" />
                             )}
                         </button>
                     </div>
@@ -102,6 +108,9 @@ export default function Navbar({ className }: { className?: string }) {
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
                             className="overflow-hidden bg-white/95 dark:bg-black/95 backdrop-blur-xl border-t border-gray-200 dark:border-gray-800"
+                            id="mobile-navigation"
+                            role="navigation"
+                            aria-label="Mobile navigation"
                         >
                             <ul className="flex flex-col p-4 space-y-1">
                                 {navLinks.map((link) => (

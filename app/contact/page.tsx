@@ -4,16 +4,19 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import PageTransition from '@/components/PageTransition';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import SuccessModal from '@/components/SuccessModal';
 import { sendEmail } from '@/app/actions/sendEmail';
 import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import { ContactFormData } from '@/types/contact';
+import { fadeInDown, slideInLeft, slideInRight } from '@/lib/animations';
 
 export default function Contact() {
-    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<ContactFormData>();
     const [isSending, setIsSending] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: ContactFormData) => {
         setIsSending(true);
 
         const formData = new FormData();
@@ -29,7 +32,7 @@ export default function Contact() {
             setShowModal(true);
             reset();
         } else {
-            alert('Failed to send email. Please try again.');
+            toast.error(result.error || 'Failed to send email. Please try again.');
         }
     };
     return (
@@ -37,8 +40,7 @@ export default function Contact() {
             <div className="max-w-6xl mx-auto py-10">
                 <motion.h1
                     className="text-4xl font-bold mb-12 text-center"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    {...fadeInDown}
                 >
                     Get In Touch
                 </motion.h1>
@@ -46,8 +48,7 @@ export default function Contact() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                     {/* Contact Info */}
                     <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
+                        {...slideInLeft}
                         transition={{ delay: 0.2 }}
                         className="space-y-8"
                     >
@@ -88,17 +89,19 @@ export default function Contact() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="p-3 bg-white/5 border border-gray-200 dark:border-white/10 rounded-full hover:bg-[#7C4DFF] hover:text-white transition-all hover:scale-110"
+                                    aria-label="Visit GitHub profile"
                                 >
-                                    <FaGithub size={24} />
+                                    <FaGithub size={24} aria-hidden="true" />
                                 </a>
                                 {/* Add LinkedIn if available */}
                                 <a
-                                    href="#"
+                                    href="https://linkedin.com/in/amalthilakan"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="p-3 bg-white/5 border border-gray-200 dark:border-white/10 rounded-full hover:bg-[#0077b5] hover:text-white transition-all hover:scale-110"
+                                    aria-label="Visit LinkedIn profile"
                                 >
-                                    <FaLinkedin size={24} />
+                                    <FaLinkedin size={24} aria-hidden="true" />
                                 </a>
                             </div>
                         </div>
@@ -106,15 +109,15 @@ export default function Contact() {
 
                     {/* Contact Form */}
                     <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
+                        {...slideInRight}
                         transition={{ delay: 0.4 }}
                         className="bg-white/5 dark:bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-gray-200 dark:border-white/10"
                     >
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                             <div>
-                                <label className="block text-sm font-medium mb-2">Name</label>
+                                <label htmlFor="contact-name" className="block text-sm font-medium mb-2">Name</label>
                                 <input
+                                    id="contact-name"
                                     {...register("name", { required: true })}
                                     className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 focus:border-[#7C4DFF] focus:ring-1 focus:ring-[#7C4DFF] outline-none transition-all"
                                     placeholder="Your Name"
@@ -123,8 +126,9 @@ export default function Contact() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium mb-2">Email</label>
+                                <label htmlFor="contact-email" className="block text-sm font-medium mb-2">Email</label>
                                 <input
+                                    id="contact-email"
                                     {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
                                     className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 focus:border-[#7C4DFF] focus:ring-1 focus:ring-[#7C4DFF] outline-none transition-all"
                                     placeholder="your@email.com"
@@ -133,8 +137,9 @@ export default function Contact() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium mb-2">Message</label>
+                                <label htmlFor="contact-message" className="block text-sm font-medium mb-2">Message</label>
                                 <textarea
+                                    id="contact-message"
                                     {...register("message", { required: true })}
                                     rows={4}
                                     className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 focus:border-[#7C4DFF] focus:ring-1 focus:ring-[#7C4DFF] outline-none transition-all resize-none"

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import PageTransition from '@/components/PageTransition';
 import {
@@ -13,6 +14,7 @@ import {
 } from 'react-icons/si';
 import { VscVscode } from 'react-icons/vsc';
 import { TbApi, TbBrandReactNative } from 'react-icons/tb';
+import { SkillCardSkeleton } from '@/components/SkeletonCard';
 
 type Skill = {
     name: string;
@@ -59,6 +61,26 @@ const skillGroups: Record<string, Skill[]> = {
 };
 
 export default function Skills() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setIsLoading(false), 100);
+        return () => clearTimeout(timer);
+    }, []);
+
+    // Pre-compute all skill positions at top level (respecting Rules of Hooks)
+    const allSkillPositions = useMemo(() => {
+        const positions: Record<string, { marginTop: number; marginLeft: number; marginRight: number }[]> = {};
+        Object.entries(skillGroups).forEach(([category, skills]) => {
+            positions[category] = skills.map((_, index) => ({
+                marginTop: (index % 3) * 10,
+                marginLeft: (index % 4) * 5,
+                marginRight: (index % 2) * 5,
+            }));
+        });
+        return positions;
+    }, []);
+
     return (
         <PageTransition>
             <section className="max-w-6xl mx-auto px-6 py-16">
@@ -78,65 +100,73 @@ export default function Skills() {
                 </motion.div>
 
                 {/* Skill Groups */}
-                <div className="space-y-14">
-                    {Object.entries(skillGroups).map(([category, skills], i) => (
-                        <motion.div
-                            key={category}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.1 }}
-                        >
-                            <h2 className="text-xl font-semibold mb-6 border-l-4 border-[#7C4DFF] pl-4">
-                                {category}
-                            </h2>
-
-                            <div className="flex flex-wrap gap-4 relative z-10">
-                                {skills.map((skill, index) => {
-                                    // Random positioning to break grid
-                                    const marginTop = (index % 3) * 10;
-                                    const marginLeft = (index % 4) * 5;
-                                    const marginRight = (index % 2) * 5;
-
-                                    return (
-                                        <motion.div
-                                            key={skill.name}
-                                            className="relative group"
-                                            style={{
-                                                marginTop: `${marginTop}px`,
-                                                marginLeft: `${marginLeft}px`,
-                                                marginRight: `${marginRight}px`
-                                            }}
-                                            initial={{ opacity: 0, scale: 0 }}
-                                            animate={{
-                                                opacity: 1,
-                                                scale: 1,
-                                            }}
-                                            transition={{
-                                                opacity: { duration: 0.5, delay: index * 0.05 },
-                                                scale: { duration: 0.5, delay: index * 0.05 },
-                                            }}
-                                            whileHover={{ scale: 1.15, zIndex: 10 }}
-                                        >
-                                            <div className="flex flex-col items-center justify-center w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white/70 dark:bg-white/5 backdrop-blur-sm border border-gray-200 dark:border-white/10 shadow-sm group-hover:shadow-lg group-hover:border-[#7C4DFF]/50 transition-all cursor-pointer">
-                                                <div className="text-2xl sm:text-3xl mb-1 sm:mb-2 text-[#7C4DFF] group-hover:scale-110 transition-transform duration-300">
-                                                    {skill.icon ? (
-                                                        <skill.icon />
-                                                    ) : (
-                                                        <span className="text-lg font-semibold">{'</>'}</span>
-                                                    )}
-                                                </div>
-                                                <span className="text-xs sm:text-sm font-medium text-center px-2 pointer-events-none select-none text-gray-800 dark:text-gray-200 line-clamp-1">
-                                                    {skill.name}
-                                                </span>
-                                            </div>
-                                        </motion.div>
-                                    );
-                                })}
+                {isLoading ? (
+                    <div className="space-y-14">
+                        {[1, 2, 3].map((i) => (
+                            <div key={i}>
+                                <div className="h-6 w-40 bg-gray-300/20 dark:bg-gray-300/10 rounded mb-6 animate-pulse" />
+                                <SkillCardSkeleton />
                             </div>
-                        </motion.div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="space-y-14">
+                        {Object.entries(skillGroups).map(([category, skills], i) => {
+                            const skillPositions = allSkillPositions[category];
+
+                            return (
+                                <motion.div
+                                    key={category}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: i * 0.1 }}
+                                >
+                                    <h2 className="text-xl font-semibold mb-6 border-l-4 border-[#7C4DFF] pl-4">
+                                        {category}
+                                    </h2>
+
+                                    <div className="flex flex-wrap gap-4 relative z-10">
+                                        {skills.map((skill, index) => (
+                                            <motion.div
+                                                key={skill.name}
+                                                className="relative group"
+                                                style={{
+                                                    marginTop: `${skillPositions[index].marginTop}px`,
+                                                    marginLeft: `${skillPositions[index].marginLeft}px`,
+                                                    marginRight: `${skillPositions[index].marginRight}px`
+                                                }}
+                                                initial={{ opacity: 0, scale: 0 }}
+                                                animate={{
+                                                    opacity: 1,
+                                                    scale: 1,
+                                                }}
+                                                transition={{
+                                                    opacity: { duration: 0.5, delay: index * 0.05 },
+                                                    scale: { duration: 0.5, delay: index * 0.05 },
+                                                }}
+                                                whileHover={{ scale: 1.15, zIndex: 10 }}
+                                            >
+                                                <div className="flex flex-col items-center justify-center w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white/70 dark:bg-white/5 backdrop-blur-sm border border-gray-200 dark:border-white/10 shadow-sm group-hover:shadow-lg group-hover:border-[#7C4DFF]/50 transition-all cursor-pointer">
+                                                    <div className="text-2xl sm:text-3xl mb-1 sm:mb-2 text-[#7C4DFF] group-hover:scale-110 transition-transform duration-300">
+                                                        {skill.icon ? (
+                                                            <skill.icon />
+                                                        ) : (
+                                                            <span className="text-lg font-semibold">{'</>'}</span>
+                                                        )}
+                                                    </div>
+                                                    <span className="text-xs sm:text-sm font-medium text-center px-2 pointer-events-none select-none text-gray-800 dark:text-gray-200 line-clamp-1">
+                                                        {skill.name}
+                                                    </span>
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+                )}
             </section>
         </PageTransition>
     );

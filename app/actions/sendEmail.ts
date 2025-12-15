@@ -1,11 +1,50 @@
 'use server';
 
 import nodemailer from 'nodemailer';
+import { headers } from 'next/headers';
+
+// Simple in-memory rate limiter (for production, use Redis)
+const submissions = new Map<string, { count: number; resetTime: number }>();
+
+function isRateLimited(ip: string): boolean {
+    const now = Date.now();
+    const record = submissions.get(ip);
+
+    if (!record || now > record.resetTime) {
+        submissions.set(ip, { count: 1, resetTime: now + 60000 }); // 1 min
+        return false;
+    }
+
+    if (record.count >= 3) { // Max 3 submissions per minute
+        return true;
+    }
+
+    record.count++;
+    return false;
+}
 
 export async function sendEmail(formData: FormData) {
+    // Check rate limit first
+    const headersList = await headers();
+    const ip = headersList.get('x-forwarded-for') || 'unknown';
+
+    if (isRateLimited(ip)) {
+        return {
+            success: false,
+            error: 'Too many requests. Please wait a minute.'
+        };
+    }
+
     const name = formData.get('name') as string;
     const email = formData.get('email') as string;
     const message = formData.get('message') as string;
+
+    const EMAIL_USER = process.env.EMAIL_USER;
+    const EMAIL_PASS = process.env.EMAIL_PASS;
+
+    if (!EMAIL_USER || !EMAIL_PASS) {
+        return { success: false, error: 'Email credentials not found' };
+    }
 
     if (!name || !email || !message) {
         return { success: false, error: 'Missing fields' };
@@ -14,8 +53,8 @@ export async function sendEmail(formData: FormData) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS,
+            user: EMAIL_USER,
+            pass: EMAIL_PASS,
         },
     });
 
@@ -23,7 +62,7 @@ export async function sendEmail(formData: FormData) {
 
     try {
         await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+            from: EMAIL_USER,
             to: 'amalthilakan111@gmail.com',
             replyTo: email,
             subject: `Portfolio Contact from ${capitalizedName}`,

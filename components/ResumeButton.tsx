@@ -55,6 +55,9 @@ export default function ResumeButton() {
                     Downloaded <HiCheck />
                 </>
             )}
+            <span aria-live="polite" className="sr-only">
+                {status === 'loading' ? 'Downloading resume...' : status === 'success' ? 'Resume downloaded successfully' : ''}
+            </span>
         </button>
     );
 }

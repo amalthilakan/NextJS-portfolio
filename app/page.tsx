@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { HiDownload, HiArrowRight } from 'react-icons/hi';
+import { HiArrowRight } from 'react-icons/hi';
 import PageTransition from '@/components/PageTransition';
 import { CardContainer, CardItem, CardBody } from '@/components/ui/3d-card';
 import { EncryptedText } from '@/components/ui/encrypted-text';
@@ -11,10 +11,21 @@ import Footer from '@/components/Footer';
 import { FloatingDock } from '@/components/ui/floating-dock';
 import ResumeButton from '@/components/ResumeButton';
 import { IconBrandGithub, IconPalette, IconBrandInstagram, IconBrandLinkedin } from '@tabler/icons-react';
+import { useState, useEffect, useCallback } from 'react';
+import { fadeInDown, fadeIn, fadeInUp } from '@/lib/animations';
 
 export default function Home() {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const toggleFlip = useCallback(() => {
+    setIsFlipped(prev => !prev);
+  }, []);
+  useEffect(() => {
+    const interval = setInterval(toggleFlip, 5000);
+    return () => clearInterval(interval);
+  }, [toggleFlip]);
+
   const links = [
-    //colorpalettegenerator
     {
       title: "Color Palette Generator",
       icon: (
@@ -39,7 +50,6 @@ export default function Home() {
       href: "https://linkedin.com/in/amalthilakan",
       className: "hover:bg-[#0077b5] dark:hover:bg-[#0077b5]",
     },
-    //instagram
     {
       title: "Instagram",
       icon: (
@@ -56,8 +66,7 @@ export default function Home() {
           {/* Text Content */}
           <div className="flex-1 text-center md:text-left order-2 md:order-1">
             <motion.h2
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
+              {...fadeInDown}
               transition={{ delay: 0.1 }}
               className="text-xl md:text-2xl font-medium text-[#7C4DFF] mb-2"
             >
@@ -69,16 +78,14 @@ export default function Home() {
               revealDelayMs={70}
             />
             <motion.h3
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              {...fadeIn}
               transition={{ delay: 0.3 }}
               className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-6"
             >
               Software Engineer & Data Science Specialist
             </motion.h3>
             <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              {...fadeIn}
               transition={{ delay: 0.4 }}
               className="text-gray-500 dark:text-gray-400 max-w-lg mx-auto md:mx-0 mb-8 leading-relaxed"
             >
@@ -87,8 +94,7 @@ export default function Home() {
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              {...fadeInUp}
               transition={{ delay: 0.5 }}
               className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
             >
@@ -108,16 +114,36 @@ export default function Home() {
               <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-[#7C4DFF]/20 dark:bg-gray-900 dark:border-white/20 border-2 border-gray-200 w-[280px] sm:w-[320px] md:w-[380px] h-auto rounded-2xl p-0 overflow-hidden">
                 <CardItem
                   translateZ="100"
-                  className="w-full"
+                  className="w-full h-[350px] sm:h-[400px] md:h-[450px] -mb-5"
                 >
-                  <Image
-                    src="/profile.jpg"
-                    alt="Amal Thilakan"
-                    width={380}
-                    height={480}
-                    className="w-full h-[350px] sm:h-[400px] md:h-[450px] object-cover object-top -mb-5 group-hover/card:shadow-xl"
-                    priority
-                  />
+                  <div
+                    className="w-full h-full relative transition-all duration-500 transform-3d cursor-pointer"
+                    style={{ transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)" }}
+                    onClick={() => setIsFlipped(!isFlipped)}
+                  >
+                    {/* Front Face */}
+                    <div className="absolute inset-0 w-full h-full backface-hidden">
+                      <Image
+                        // src="/amal_image.png"
+                        src="/profile.jpg"
+                        alt="Amal Thilakan"
+                        fill
+                        className="object-cover object-[center_top] rounded-xl group-hover/card:shadow-xl"
+                        priority
+                      />
+                    </div>
+
+                    {/* Back Face */}
+                    <div className="absolute inset-0 w-full h-full backface-hidden transform-[rotateY(180deg)] rounded-xl overflow-hidden bg-gray-100 dark:bg-zinc-800">
+                      <Image
+                        // src="/amalAnimated.png"
+                        src="/amal_animated.png"
+                        alt="Amal Thilakan anime"
+                        fill
+                        className="object-cover object-[center_top] group-hover/card:shadow-xl"
+                      />
+                    </div>
+                  </div>
                 </CardItem>
               </CardBody>
             </CardContainer>
@@ -129,7 +155,7 @@ export default function Home() {
             items={links}
           />
         </div>
-      </PageTransition>
+      </PageTransition >
       <Footer />
     </>
   );

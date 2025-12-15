@@ -1,9 +1,11 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import PageTransition from '@/components/PageTransition';
 import Image from 'next/image';
 import { FaGithub, FaExternalLinkAlt, FaAndroid } from 'react-icons/fa';
+import { ProjectSkeleton } from '@/components/SkeletonCard';
 
 interface Project {
     title: string;
@@ -60,6 +62,13 @@ const projects: Project[] = [
 ];
 
 export default function Projects() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setIsLoading(false), 100);
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
         <PageTransition>
             <div className="max-w-6xl mx-auto py-10">
@@ -71,24 +80,31 @@ export default function Projects() {
                     Featured Projects
                 </motion.h1>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {projects.map((project, index) => (
-                        <motion.div
-                            key={index}
-                            className="group bg-white/5 dark:bg-white/5 rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10 hover:border-[#7C4DFF]/50 transition-all hover:shadow-2xl hover:shadow-[#7C4DFF]/20"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 + index * 0.1 }}
-                        >
-                            <div className="relative h-64 overflow-hidden">
-                                <Image
-                                    src={project.image}
-                                    alt={project.title}
-                                    fill
-                                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                                />
-                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                                    {/* <a
+                {isLoading ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {[1, 2, 3, 4].map((i) => (
+                            <ProjectSkeleton key={i} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {projects.map((project, index) => (
+                            <motion.div
+                                key={index}
+                                className="group bg-white/5 dark:bg-white/5 rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10 hover:border-[#7C4DFF]/50 transition-all hover:shadow-2xl hover:shadow-[#7C4DFF]/20"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 + index * 0.1 }}
+                            >
+                                <div className="relative h-64 overflow-hidden">
+                                    <Image
+                                        src={project.image}
+                                        alt={project.title}
+                                        fill
+                                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                    />
+                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                                        {/* <a
                                         href={project.github}
                                         target="_blank"
                                         rel="noopener noreferrer"
@@ -96,7 +112,7 @@ export default function Projects() {
                                     >
                                         <FaGithub size={20} />
                                     </a> */}
-                                    {/* <a
+                                        {/* <a
                                         href={project.live}
                                         target="_blank"
                                         rel="noopener noreferrer"
@@ -104,40 +120,41 @@ export default function Projects() {
                                     >
                                         <FaExternalLinkAlt size={20} />
                                     </a> */}
-                                </div>
-                            </div>
-
-                            <div className="p-6">
-                                <h3 className="text-2xl font-bold mb-3">{project.title}</h3>
-                                <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
-                                    {project.description}
-                                </p>
-                                <div className="flex flex-wrap gap-2">
-                                    {project.tags.map((tag, i) => (
-                                        <span
-                                            key={i}
-                                            className="px-3 py-1 text-xs font-medium bg-[#7C4DFF]/10 text-[#7C4DFF] rounded-full"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
-                                {project.apk && (
-                                    <div className="mt-6">
-                                        <a
-                                            href={project.apk}
-                                            download
-                                            className="inline-flex items-center gap-2 px-4 py-2 bg-[#7C4DFF] text-white rounded-lg hover:bg-[#6c42e0] transition-colors font-medium text-sm"
-                                        >
-                                            <FaAndroid size={18} />
-                                            Download App
-                                        </a>
                                     </div>
-                                )}
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+                                </div>
+
+                                <div className="p-6">
+                                    <h3 className="text-2xl font-bold mb-3">{project.title}</h3>
+                                    <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+                                        {project.description}
+                                    </p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {project.tags.map((tag, i) => (
+                                            <span
+                                                key={i}
+                                                className="px-3 py-1 text-xs font-medium bg-[#7C4DFF]/10 text-[#7C4DFF] rounded-full"
+                                            >
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                    {project.apk && (
+                                        <div className="mt-6">
+                                            <a
+                                                href={project.apk}
+                                                download
+                                                className="inline-flex items-center gap-2 px-4 py-2 bg-[#7C4DFF] text-white rounded-lg hover:bg-[#6c42e0] transition-colors font-medium text-sm"
+                                            >
+                                                <FaAndroid size={18} />
+                                                Download App
+                                            </a>
+                                        </div>
+                                    )}
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                )}
             </div>
         </PageTransition>
     );
