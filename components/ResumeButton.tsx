@@ -16,8 +16,8 @@ export default function ResumeButton() {
 
             // Trigger download
             const link = document.createElement('a');
-            link.href = '/AmalResumeATS.pdf';
-            link.download = 'AmalResumeATS.pdf';
+            link.href = '/AmalThilakanResume.pdf';
+            link.download = 'AmalThilakanResume.pdf';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
