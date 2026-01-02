@@ -1,8 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import PageTransition from '@/components/PageTransition';
 import {
     FaPython, FaJava, FaHtml5, FaCss3Alt, FaJs, FaReact,
     FaNodeJs, FaDatabase, FaGitAlt
@@ -15,11 +13,16 @@ import {
 import { VscVscode } from 'react-icons/vsc';
 import { TbApi, TbBrandReactNative } from 'react-icons/tb';
 import { SkillCardSkeleton } from '@/components/SkeletonCard';
+import { useState, useEffect, useMemo } from 'react';
+import { panInLeft, panInRight } from '@/lib/animations';
 
 type Skill = {
     name: string;
     icon: React.ElementType | null;
 };
+
+// ... skillGroups (no change)
+// Assuming I need to replace from start of file to the map loop to inject imports and props correctly.
 
 const skillGroups: Record<string, Skill[]> = {
     Languages: [
@@ -60,7 +63,7 @@ const skillGroups: Record<string, Skill[]> = {
     ],
 };
 
-export default function Skills() {
+export default function SkillsSection() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -82,12 +85,13 @@ export default function Skills() {
     }, []);
 
     return (
-        <PageTransition>
-            <section className="max-w-6xl mx-auto px-6 py-16">
+        <section id="skills" className="py-20 min-h-screen flex items-center overflow-hidden">
+            <div className="max-w-6xl mx-auto w-full px-6">
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     className="text-center mb-16"
                 >
                     <h1 className="text-4xl font-bold tracking-tight">
@@ -117,10 +121,10 @@ export default function Skills() {
                             return (
                                 <motion.div
                                     key={category}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
+                                    initial="initial"
+                                    whileInView="animate"
                                     viewport={{ once: true }}
-                                    transition={{ delay: i * 0.1 }}
+                                    variants={i % 2 === 0 ? panInLeft : panInRight}
                                 >
                                     <h2 className="text-xl font-semibold mb-6 border-l-4 border-[#7C4DFF] pl-4">
                                         {category}
@@ -137,10 +141,11 @@ export default function Skills() {
                                                     marginRight: `${skillPositions[index].marginRight}px`
                                                 }}
                                                 initial={{ opacity: 0, scale: 0 }}
-                                                animate={{
+                                                whileInView={{
                                                     opacity: 1,
                                                     scale: 1,
                                                 }}
+                                                viewport={{ once: true }}
                                                 transition={{
                                                     opacity: { duration: 0.5, delay: index * 0.05 },
                                                     scale: { duration: 0.5, delay: index * 0.05 },
@@ -167,7 +172,7 @@ export default function Skills() {
                         })}
                     </div>
                 )}
-            </section>
-        </PageTransition>
+            </div>
+        </section>
     );
 }

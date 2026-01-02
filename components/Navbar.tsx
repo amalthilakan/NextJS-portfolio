@@ -2,27 +2,34 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiMenuAlt3, HiX } from 'react-icons/hi';
-import { Menu, MenuItem, HoveredLink } from '@/components/ui/navbar-menu';
+import { Menu } from '@/components/ui/navbar-menu';
 import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
-    { name: 'Skills', path: '/skills' },
-    { name: 'Projects', path: '/projects' },
-    { name: 'Experience', path: '/experience' },
-    { name: 'Contact', path: '/contact' },
+    { name: 'Home', path: '#home' },
+    { name: 'About', path: '#about' },
+    { name: 'Experience', path: '#experience' },
+    { name: 'Skills', path: '#skills' },
+    { name: 'Projects', path: '#projects' },
+    { name: 'Contact', path: '#contact' },
 ];
 
 export default function Navbar({ className }: { className?: string }) {
-    const [active, setActive] = useState<string | null>(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    const pathname = usePathname();
+    const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, path: string) => {
+        if (path.startsWith('#')) {
+            e.preventDefault();
+            const element = document.querySelector(path);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+                setMobileMenuOpen(false);
+            }
+        }
+    };
 
     return (
         <>
@@ -39,25 +46,21 @@ export default function Navbar({ className }: { className?: string }) {
                 role="navigation"
                 aria-label="Main navigation"
             >
-                <Menu setActive={setActive}>
+                <Menu setActive={() => { }}>
                     {/* Left Side - Navigation Links */}
                     <div className="flex items-center space-x-6">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
                                 href={link.path}
+                                onClick={(e) => handleScroll(e, link.path)}
                                 className={cn(
-                                    "cursor-pointer hover:opacity-[0.9] transition-colors",
-                                    pathname === link.path
-                                        ? "text-[#7C4DFF] font-bold"
-                                        : "text-black dark:text-white"
+                                    "cursor-pointer hover:opacity-[0.9] transition-colors text-black dark:text-white"
                                 )}
                             >
                                 {link.name}
                             </Link>
                         ))}
-
-
                     </div>
 
                     {/* Right Side - Theme Toggle */}
@@ -117,20 +120,15 @@ export default function Navbar({ className }: { className?: string }) {
                                     <li key={link.name}>
                                         <Link
                                             href={link.path}
-                                            onClick={() => setMobileMenuOpen(false)}
+                                            onClick={(e) => handleScroll(e, link.path)}
                                             className={cn(
-                                                "block py-3 px-4 rounded-lg transition-colors",
-                                                pathname === link.path
-                                                    ? "text-[#7C4DFF] font-bold bg-[#7C4DFF]/10"
-                                                    : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+                                                "block py-3 px-4 rounded-lg transition-colors text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
                                             )}
                                         >
                                             {link.name}
                                         </Link>
                                     </li>
                                 ))}
-
-
                             </ul>
                         </motion.div>
                     )}

@@ -1,11 +1,9 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import PageTransition from '@/components/PageTransition';
 import Image from 'next/image';
-import { FaGithub, FaExternalLinkAlt, FaAndroid } from 'react-icons/fa';
+import { FaAndroid } from 'react-icons/fa';
 import { ProjectSkeleton } from '@/components/SkeletonCard';
+import { useState, useEffect } from 'react';
+import { panInLeft, panInRight } from '@/lib/animations';
 
 interface Project {
     title: string;
@@ -61,7 +59,7 @@ const projects: Project[] = [
     }
 ];
 
-export default function Projects() {
+export default function ProjectsSection() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -70,12 +68,13 @@ export default function Projects() {
     }, []);
 
     return (
-        <PageTransition>
-            <div className="max-w-6xl mx-auto py-10">
+        <section id="projects" className="py-20 min-h-screen flex items-center overflow-hidden">
+            <div className="max-w-6xl mx-auto w-full px-4">
                 <motion.h1
                     className="text-4xl font-bold mb-12 text-center"
                     initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                 >
                     Featured Projects
                 </motion.h1>
@@ -92,9 +91,10 @@ export default function Projects() {
                             <motion.div
                                 key={index}
                                 className="group bg-white/5 dark:bg-white/5 rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10 hover:border-[#7C4DFF]/50 transition-all hover:shadow-2xl hover:shadow-[#7C4DFF]/20"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.2 + index * 0.1 }}
+                                initial="initial"
+                                whileInView="animate"
+                                viewport={{ once: true }}
+                                variants={index % 2 === 0 ? panInLeft : panInRight}
                             >
                                 <div className="relative h-64 overflow-hidden">
                                     <Image
@@ -156,6 +156,6 @@ export default function Projects() {
                     </div>
                 )}
             </div>
-        </PageTransition>
+        </section>
     );
 }

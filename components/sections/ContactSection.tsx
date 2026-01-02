@@ -1,17 +1,14 @@
-'use client';
-
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import PageTransition from '@/components/PageTransition';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import SuccessModal from '@/components/SuccessModal';
 import { sendEmail } from '@/app/actions/sendEmail';
 import { FaGithub, FaLinkedin, FaEnvelope, FaPhone } from 'react-icons/fa';
 import { ContactFormData } from '@/types/contact';
-import { fadeInDown, slideInLeft, slideInRight } from '@/lib/animations';
+import { fadeInDown, panInLeft, panInRight } from '@/lib/animations';
+import { useState } from 'react';
 
-export default function Contact() {
+export default function ContactSection() {
     const { register, handleSubmit, reset, formState: { errors } } = useForm<ContactFormData>();
     const [isSending, setIsSending] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -36,11 +33,14 @@ export default function Contact() {
         }
     };
     return (
-        <PageTransition>
-            <div className="max-w-6xl mx-auto py-10">
+        <section id="contact" className="py-20 min-h-screen flex items-center overflow-hidden">
+            <div className="max-w-6xl mx-auto w-full px-4">
                 <motion.h1
                     className="text-4xl font-bold mb-12 text-center"
-                    {...fadeInDown}
+                    initial="initial"
+                    whileInView="animate"
+                    viewport={{ once: true }}
+                    variants={fadeInDown}
                 >
                     Get In Touch
                 </motion.h1>
@@ -48,8 +48,10 @@ export default function Contact() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                     {/* Contact Info */}
                     <motion.div
-                        {...slideInLeft}
-                        transition={{ delay: 0.2 }}
+                        initial="initial"
+                        whileInView="animate"
+                        viewport={{ once: true }}
+                        variants={panInLeft}
                         className="space-y-8"
                     >
                         <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
@@ -109,8 +111,10 @@ export default function Contact() {
 
                     {/* Contact Form */}
                     <motion.div
-                        {...slideInRight}
-                        transition={{ delay: 0.4 }}
+                        initial="initial"
+                        whileInView="animate"
+                        viewport={{ once: true }}
+                        variants={panInRight}
                         className="bg-white/5 dark:bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-gray-200 dark:border-white/10"
                     >
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -164,6 +168,6 @@ export default function Contact() {
                 </div>
                 <SuccessModal isOpen={showModal} onClose={() => setShowModal(false)} />
             </div>
-        </PageTransition>
+        </section>
     );
 }

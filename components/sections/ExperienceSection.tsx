@@ -1,11 +1,11 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import PageTransition from '@/components/PageTransition';
 import { ExperienceSkeleton } from '@/components/SkeletonCard';
+import { useState, useEffect } from 'react';
+import { panInLeft, panInRight } from '@/lib/animations';
 
 const experiences = [
+    // ... items (no change, I will copy them back or assume context if I could, but wait, I can't assume context for replace. I must provide full content if replacing whole file or precise block)
+    // To be safe and since I need to change imports and the map loop, I'll replace the whole file content to ensure correctness.
     {
         role: "Python Django Internship",
         company: "AY Tech",
@@ -48,7 +48,7 @@ const experiences = [
     }
 ];
 
-export default function Experience() {
+export default function ExperienceSection() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -57,12 +57,13 @@ export default function Experience() {
     }, []);
 
     return (
-        <PageTransition>
-            <div className="max-w-4xl mx-auto py-10">
+        <section id="experience" className="py-20 min-h-screen flex items-center overflow-hidden">
+            <div className="max-w-4xl mx-auto w-full px-4">
                 <motion.h1
                     className="text-4xl font-bold mb-12 text-center"
                     initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                 >
                     Work Experience
                 </motion.h1>
@@ -75,9 +76,10 @@ export default function Experience() {
                             <motion.div
                                 key={index}
                                 className="mb-10 ml-6 md:ml-12"
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.2 + index * 0.1 }}
+                                initial="initial"
+                                whileInView="animate"
+                                viewport={{ once: true }}
+                                variants={index % 2 === 0 ? panInLeft : panInRight}
                             >
                                 <span className="absolute flex items-center justify-center w-6 h-6 bg-[#7C4DFF] rounded-full -left-3 ring-8 ring-white dark:ring-[#0a0a0a]">
                                     <svg className="w-2.5 h-2.5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -104,6 +106,6 @@ export default function Experience() {
                     </div>
                 )}
             </div>
-        </PageTransition>
+        </section>
     );
 }

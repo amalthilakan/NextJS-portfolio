@@ -1,10 +1,10 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import PageTransition from '@/components/PageTransition';
-import { fadeInDown, fadeIn, fadeInUp, slideInLeft } from '@/lib/animations';
+import { fadeInDown, slideInLeft, panInLeft, panInRight } from '@/lib/animations';
 import { CardSkeleton } from '@/components/SkeletonCard';
+import { useState, useEffect } from 'react';
+
+// ... (education array remains same, omitted for brevity if I could, but replace_file_content needs full block or precise range)
+// I will just replace the Component function body for cleaner edits.
 
 const education = [
     {
@@ -24,7 +24,7 @@ const education = [
     }
 ];
 
-export default function About() {
+export default function AboutSection() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -33,11 +33,14 @@ export default function About() {
     }, []);
 
     return (
-        <PageTransition>
-            <div className="max-w-4xl mx-auto py-10">
+        <section id="about" className="py-20 min-h-screen flex items-center overflow-hidden">
+            <div className="max-w-4xl mx-auto w-full">
                 <motion.h1
-                    className="text-4xl font-bold mb-8 text-center"
-                    {...fadeInDown}
+                    className="text-4xl font-bold mb-12 text-center"
+                    initial="initial"
+                    whileInView="animate"
+                    viewport={{ once: true }}
+                    variants={fadeInDown}
                 >
                     About Me
                 </motion.h1>
@@ -55,8 +58,10 @@ export default function About() {
                         {/* Bio Section */}
                         <motion.div
                             className="bg-white/5 dark:bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-gray-200 dark:border-white/10 mb-12"
-                            {...fadeIn}
-                            transition={{ delay: 0.2 }}
+                            initial="initial"
+                            whileInView="animate"
+                            viewport={{ once: true }}
+                            variants={panInLeft}
                         >
                             <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
                                 I am a Data Science Post Graduate with expertise in programming, database administration, web designing, and Android development.
@@ -69,18 +74,25 @@ export default function About() {
                         <motion.h2
                             id="education"
                             className="text-2xl font-bold mb-6 text-[#7C4DFF]"
-                            {...slideInLeft}
+                            initial="initial"
+                            whileInView="animate"
+                            viewport={{ once: true }}
+                            variants={slideInLeft}
                             transition={{ delay: 0.3 }}
                         >
                             Education
                         </motion.h2>
-                        <div className="space-y-6">
+                        <motion.div
+                            className="space-y-6"
+                            initial="initial"
+                            whileInView="animate"
+                            viewport={{ once: true }}
+                            variants={panInRight}
+                        >
                             {education.map((edu, index) => (
-                                <motion.div
+                                <div
                                     key={index}
                                     className="flex flex-col md:flex-row md:items-center justify-between p-6 bg-white/5 rounded-xl border border-gray-200 dark:border-white/10 hover:border-[#7C4DFF]/50 transition-colors"
-                                    {...fadeInUp}
-                                    transition={{ delay: 0.4 + index * 0.1 }}
                                 >
                                     <div>
                                         <h3 className="text-xl font-semibold">{edu.degree}</h3>
@@ -89,12 +101,12 @@ export default function About() {
                                     <span className="mt-2 md:mt-0 px-4 py-1 bg-[#7C4DFF]/10 text-[#7C4DFF] rounded-full text-sm font-medium">
                                         {edu.year}
                                     </span>
-                                </motion.div>
+                                </div>
                             ))}
-                        </div>
+                        </motion.div>
                     </>
                 )}
             </div>
-        </PageTransition>
+        </section>
     );
 }
