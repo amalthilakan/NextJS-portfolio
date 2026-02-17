@@ -5,6 +5,29 @@ import { motion } from 'framer-motion';
 import PageTransition from '@/components/PageTransition';
 import { ExperienceSkeleton } from '@/components/SkeletonCard';
 
+const timelineVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            delayChildren: 0.15,
+            staggerChildren: 0.12,
+        },
+    },
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, x: -24 },
+    visible: {
+        opacity: 1,
+        x: 0,
+        transition: {
+            duration: 0.45,
+            ease: [0.22, 1, 0.36, 1] as const,
+        },
+    },
+};
+
 const experiences = [
     {
         role: "Python Django Internship",
@@ -63,6 +86,7 @@ export default function Experience() {
                     className="text-4xl font-bold mb-12 text-center"
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.45, ease: 'easeOut' }}
                 >
                     Work Experience
                 </motion.h1>
@@ -70,14 +94,17 @@ export default function Experience() {
                 {isLoading ? (
                     <ExperienceSkeleton />
                 ) : (
-                    <div className="relative border-l border-gray-200 dark:border-gray-700 ml-4 md:ml-0">
-                        {experiences.map((exp, index) => (
-                            <motion.div
-                                key={index}
-                                className="mb-10 ml-6 md:ml-12"
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.2 + index * 0.1 }}
+                    <motion.div
+                        className="relative border-l border-gray-200 dark:border-gray-700 ml-4 md:ml-0"
+                        variants={timelineVariants}
+                        initial="hidden"
+                        animate="visible"
+                    >
+                        {experiences.map((exp) => (
+                            <motion.article
+                                key={exp.role}
+                                className="relative mb-10 ml-6 md:ml-12"
+                                variants={itemVariants}
                             >
                                 <span className="absolute flex items-center justify-center w-6 h-6 bg-[#7C4DFF] rounded-full -left-3 ring-8 ring-white dark:ring-[#0a0a0a]">
                                     <svg className="w-2.5 h-2.5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -85,7 +112,7 @@ export default function Experience() {
                                     </svg>
                                 </span>
 
-                                <div className="p-6 bg-white/5 dark:bg-white/5 rounded-2xl border border-white/10 hover:border-[#7C4DFF]/50 transition-colors shadow-lg">
+                                <div className="p-6 bg-white/5 dark:bg-white/5 rounded-2xl border border-white/10 hover:border-[#7C4DFF]/50 transition-all duration-300 shadow-lg">
                                     <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
                                         <h3 className="text-xl font-bold text-gray-900 dark:text-white">{exp.role}</h3>
                                         <span className="text-sm font-medium text-[#7C4DFF] bg-[#7C4DFF]/10 px-3 py-1 rounded-full mt-2 md:mt-0 w-fit">
@@ -99,9 +126,9 @@ export default function Experience() {
                                         ))}
                                     </ul>
                                 </div>
-                            </motion.div>
+                            </motion.article>
                         ))}
-                    </div>
+                    </motion.div>
                 )}
             </div>
         </PageTransition>

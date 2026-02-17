@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import PageTransition from '@/components/PageTransition';
 import Image from 'next/image';
-import { FaGithub, FaExternalLinkAlt, FaAndroid } from 'react-icons/fa';
 import { ProjectSkeleton } from '@/components/SkeletonCard';
 
 interface Project {
@@ -61,6 +60,29 @@ const projects: Project[] = [
     }
 ];
 
+const gridVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            delayChildren: 0.12,
+            staggerChildren: 0.1,
+        },
+    },
+};
+
+const cardVariants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.45,
+            ease: [0.22, 1, 0.36, 1] as const,
+        },
+    },
+};
+
 export default function Projects() {
     const [isLoading, setIsLoading] = useState(true);
 
@@ -76,6 +98,7 @@ export default function Projects() {
                     className="text-4xl font-bold mb-12 text-center"
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.45, ease: 'easeOut' }}
                 >
                     Featured Projects
                 </motion.h1>
@@ -87,14 +110,17 @@ export default function Projects() {
                         ))}
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {projects.map((project, index) => (
-                            <motion.div
-                                key={index}
+                    <motion.div
+                        className="grid grid-cols-1 md:grid-cols-2 gap-8"
+                        variants={gridVariants}
+                        initial="hidden"
+                        animate="visible"
+                    >
+                        {projects.map((project) => (
+                            <motion.article
+                                key={project.title}
                                 className="group bg-white/5 dark:bg-white/5 rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10 hover:border-[#7C4DFF]/50 transition-all hover:shadow-2xl hover:shadow-[#7C4DFF]/20"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.2 + index * 0.1 }}
+                                variants={cardVariants}
                             >
                                 <div className="relative h-64 overflow-hidden">
                                     <Image
@@ -151,9 +177,9 @@ export default function Projects() {
                                         </div>
                                     )} */}
                                 </div>
-                            </motion.div>
+                            </motion.article>
                         ))}
-                    </div>
+                    </motion.div>
                 )}
             </div>
         </PageTransition>
