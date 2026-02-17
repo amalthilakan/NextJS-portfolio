@@ -138,7 +138,7 @@ export default function Projects() {
                                             </span>
                                         ))}
                                     </div>
-                                    {project.apk && (
+                                    {/* {project.apk && (
                                         <div className="mt-6">
                                             <a
                                                 href={project.apk}
@@ -149,7 +149,7 @@ export default function Projects() {
                                                 Download App
                                             </a>
                                         </div>
-                                    )}
+                                    )} */}
                                 </div>
                             </motion.div>
                         ))}
