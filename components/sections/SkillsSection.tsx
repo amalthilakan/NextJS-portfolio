@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import PageTransition from '@/components/PageTransition';
 import {
     FaPython, FaJava, FaHtml5, FaCss3Alt, FaJs, FaReact,
     FaNodeJs, FaDatabase, FaGitAlt
@@ -60,7 +59,7 @@ const skillGroups: Record<string, Skill[]> = {
     ],
 };
 
-export default function Skills() {
+export default function SkillsSection() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -82,8 +81,8 @@ export default function Skills() {
     }, []);
 
     return (
-        <PageTransition>
-            <section className="max-w-6xl mx-auto px-6 py-16">
+        <section id="skills" className="py-20 bg-gray-50/50 dark:bg-zinc-900/20">
+            <div className="max-w-6xl mx-auto px-6">
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
@@ -119,7 +118,7 @@ export default function Skills() {
                                     key={category}
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
+                                    viewport={{ once: true, margin: "-20px" }}
                                     transition={{ delay: i * 0.1 }}
                                 >
                                     <h2 className="text-xl font-semibold mb-6 border-l-4 border-[#7C4DFF] pl-4">
@@ -167,7 +166,7 @@ export default function Skills() {
                         })}
                     </div>
                 )}
-            </section>
-        </PageTransition>
+            </div>
+        </section>
     );
 }

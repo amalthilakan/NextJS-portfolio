@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import PageTransition from '@/components/PageTransition';
 import Image from 'next/image';
 import { ProjectSkeleton } from '@/components/SkeletonCard';
 
@@ -83,7 +82,7 @@ const cardVariants = {
     },
 };
 
-export default function Projects() {
+export default function ProjectsSection() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -92,8 +91,8 @@ export default function Projects() {
     }, []);
 
     return (
-        <PageTransition>
-            <div className="max-w-6xl mx-auto py-10">
+        <section id="projects" className="py-20">
+            <div className="max-w-6xl mx-auto px-6">
                 <motion.h1
                     className="text-4xl font-bold mb-12 text-center"
                     initial={{ opacity: 0, y: -20 }}
@@ -114,7 +113,8 @@ export default function Projects() {
                         className="grid grid-cols-1 md:grid-cols-2 gap-8"
                         variants={gridVariants}
                         initial="hidden"
-                        animate="visible"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: "-50px" }}
                     >
                         {projects.map((project) => (
                             <motion.article
@@ -182,6 +182,6 @@ export default function Projects() {
                     </motion.div>
                 )}
             </div>
-        </PageTransition>
+        </section>
     );
 }

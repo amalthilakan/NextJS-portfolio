@@ -9,10 +9,12 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@studio-freight/lenis": "^1.0.42",
     "@tabler/icons-react": "^3.35.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.26",
+    "lenis": "^1.3.17",
     "lucide-react": "^0.561.0",
     "next": "^16.0.8",
     "nodemailer": "^7.0.11",

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import PageTransition from '@/components/PageTransition';
 import { fadeInDown, fadeIn, fadeInUp, slideInLeft } from '@/lib/animations';
 import { CardSkeleton } from '@/components/SkeletonCard';
 
@@ -24,7 +23,7 @@ const education = [
     }
 ];
 
-export default function About() {
+export default function AboutSection() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -33,11 +32,14 @@ export default function About() {
     }, []);
 
     return (
-        <PageTransition>
-            <div className="max-w-4xl mx-auto py-10">
+        <section id="about" className="py-20">
+            <div className="max-w-4xl mx-auto px-6">
                 <motion.h1
                     className="text-4xl font-bold mb-8 text-center"
-                    {...fadeInDown}
+                    initial="initial"
+                    whileInView="animate"
+                    viewport={{ once: true, margin: "-20px" }}
+                    variants={fadeInDown}
                 >
                     About Me
                 </motion.h1>
@@ -55,7 +57,10 @@ export default function About() {
                         {/* Bio Section */}
                         <motion.div
                             className="bg-white/5 dark:bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-gray-200 dark:border-white/10 mb-12"
-                            {...fadeIn}
+                            initial="initial"
+                            whileInView="animate"
+                            viewport={{ once: true, margin: "-20px" }}
+                            variants={fadeIn}
                             transition={{ delay: 0.2 }}
                         >
                             <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
@@ -69,7 +74,10 @@ export default function About() {
                         <motion.h2
                             id="education"
                             className="text-2xl font-bold mb-6 text-[#7C4DFF]"
-                            {...slideInLeft}
+                            initial="initial"
+                            whileInView="animate"
+                            viewport={{ once: true, margin: "-20px" }}
+                            variants={slideInLeft}
                             transition={{ delay: 0.3 }}
                         >
                             Education
@@ -79,7 +87,10 @@ export default function About() {
                                 <motion.div
                                     key={index}
                                     className="flex flex-col md:flex-row md:items-center justify-between p-6 bg-white/5 rounded-xl border border-gray-200 dark:border-white/10 hover:border-[#7C4DFF]/50 transition-colors"
-                                    {...fadeInUp}
+                                    initial="initial"
+                                    whileInView="animate"
+                                    viewport={{ once: true, margin: "-20px" }}
+                                    variants={fadeInUp}
                                     transition={{ delay: 0.4 + index * 0.1 }}
                                 >
                                     <div>
@@ -95,6 +106,6 @@ export default function About() {
                     </>
                 )}
             </div>
-        </PageTransition>
+        </section>
     );
 }

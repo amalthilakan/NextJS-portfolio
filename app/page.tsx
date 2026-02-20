@@ -11,8 +11,14 @@ import Footer from '@/components/Footer';
 import { FloatingDock } from '@/components/ui/floating-dock';
 import ResumeButton from '@/components/ResumeButton';
 import { IconBrandGithub, IconPalette, IconBrandInstagram, IconBrandLinkedin } from '@tabler/icons-react';
-import { useState, useEffect, useCallback } from 'react';
-import { fadeInDown, fadeIn, fadeInUp } from '@/lib/animations';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { fadeInDown, fadeIn, fadeInUp, float, hoverScale } from '@/lib/animations';
+import AboutSection from '@/components/sections/AboutSection';
+import ExperienceSection from '@/components/sections/ExperienceSection';
+import ProjectsSection from '@/components/sections/ProjectsSection';
+import SkillsSection from '@/components/sections/SkillsSection';
+import ContactSection from '@/components/sections/ContactSection';
+import { useScroll, useTransform } from 'framer-motion';
 
 export default function Home() {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -59,10 +65,24 @@ export default function Home() {
       className: "hover:bg-[#E1306C] dark:hover:bg-[#E1306C]",
     },
   ];
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
+
   return (
-    <>
+    <div ref={containerRef} className="relative w-full">
       <PageTransition>
-        <div className="flex flex-col md:flex-row items-center justify-center min-h-[80vh] gap-10">
+        <motion.section 
+          id="home" 
+          className="container mx-auto relative px-6 flex flex-col md:flex-row items-center justify-center min-h-screen gap-10 pt-20 pb-24"
+          style={{ y: heroY, opacity: heroOpacity }}
+        >
           {/* Text Content */}
           <div className="flex-1 text-center md:text-left order-2 md:order-1">
             <motion.h2
@@ -82,7 +102,7 @@ export default function Home() {
               transition={{ delay: 0.3 }}
               className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-6"
             >
-              Software Engineer & Data Science Specialist
+              Software Developer & Enthusiast
             </motion.h3>
             <motion.p
               {...fadeIn}
@@ -98,18 +118,27 @@ export default function Home() {
               transition={{ delay: 0.5 }}
               className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
             >
-              <Link
-                href="/contact"
-                className="px-8 py-3 rounded-full bg-[#7C4DFF] text-white font-semibold hover:bg-[#6c42e0] transition-colors flex items-center justify-center gap-2 shadow-lg shadow-[#7C4DFF]/30"
+              <motion.div
+                whileHover={hoverScale.whileHover}
+                whileTap={hoverScale.whileTap}
+                className="inline-block"
               >
-                Hire Me <HiArrowRight />
-              </Link>
+                <Link
+                  href="/contact"
+                  className="px-8 py-3 rounded-full bg-[#7C4DFF] text-white font-semibold hover:bg-[#6c42e0] transition-colors flex items-center justify-center gap-2 shadow-lg shadow-[#7C4DFF]/30"
+                >
+                  Hire Me <HiArrowRight />
+                </Link>
+              </motion.div>
               <ResumeButton />
             </motion.div>
           </div>
 
           {/* Image */}
-          <div className="flex-1 order-1 md:order-2 flex justify-center">
+          <motion.div 
+            className="flex-1 order-1 md:order-2 flex justify-center"
+            animate={float.animate}
+          >
             <CardContainer className="inter-var">
               <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-[#7C4DFF]/20 dark:bg-gray-900 dark:border-white/20 border-2 border-gray-200 w-[280px] sm:w-[320px] md:w-[380px] h-auto rounded-2xl p-0 overflow-hidden">
                 <CardItem
@@ -147,16 +176,24 @@ export default function Home() {
                 </CardItem>
               </CardBody>
             </CardContainer>
-          </div>
+          </motion.div>
 
+          {/* Floating Dock inside Home Section */}
+          <div className="absolute bottom-10 left-0 right-0 z-50 flex items-center justify-center">
+            <FloatingDock items={links} />
+          </div>
+        </motion.section>
+
+        {/* Stacked Sections with Parallax Wrapper */}
+        <div className="relative z-10 bg-white dark:bg-black">
+          <AboutSection />
+          <SkillsSection />
+          <ProjectsSection />
+          <ExperienceSection />
+          <ContactSection />
         </div>
-        <div className="flex items-center justify-center mb-5 mt-5">
-          <FloatingDock
-            items={links}
-          />
-        </div>
-      </PageTransition >
+      </PageTransition>
       <Footer />
-    </>
+    </div>
   );
 }

@@ -92,7 +92,7 @@ export default function SuccessModal({ isOpen, onClose }: SuccessModalProps) {
                                 Email Sent!
                             </h3>
                             <p className="text-gray-600 dark:text-gray-300 mb-8">
-                                Your message has been received. I'll get back to you shortly.
+                                Your message has been received. I&apos;ll get back to you shortly.
                             </p>
 
                             <button

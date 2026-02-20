@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import PageTransition from '@/components/PageTransition';
 import { ExperienceSkeleton } from '@/components/SkeletonCard';
 
 const timelineVariants = {
@@ -71,7 +70,7 @@ const experiences = [
     }
 ];
 
-export default function Experience() {
+export default function ExperienceSection() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -80,8 +79,8 @@ export default function Experience() {
     }, []);
 
     return (
-        <PageTransition>
-            <div className="max-w-4xl mx-auto py-10">
+        <section id="experience" className="py-20 bg-gray-50/50 dark:bg-zinc-900/20">
+            <div className="max-w-4xl mx-auto px-6">
                 <motion.h1
                     className="text-4xl font-bold mb-12 text-center"
                     initial={{ opacity: 0, y: -20 }}
@@ -98,7 +97,8 @@ export default function Experience() {
                         className="relative border-l border-gray-200 dark:border-gray-700 ml-4 md:ml-0"
                         variants={timelineVariants}
                         initial="hidden"
-                        animate="visible"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: "-50px" }}
                     >
                         {experiences.map((exp) => (
                             <motion.article
@@ -112,7 +112,7 @@ export default function Experience() {
                                     </svg>
                                 </span>
 
-                                <div className="p-6 bg-white/5 dark:bg-white/5 rounded-2xl border border-white/10 hover:border-[#7C4DFF]/50 transition-all duration-300 shadow-lg">
+                                <div className="p-6 bg-white/5 dark:bg-white/5 rounded-2xl border border-white/10 hover:border-[#7C4DFF]/50 transition-all duration-300 shadow-lg group hover:-translate-y-1">
                                     <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
                                         <h3 className="text-xl font-bold text-gray-900 dark:text-white">{exp.role}</h3>
                                         <span className="text-sm font-medium text-[#7C4DFF] bg-[#7C4DFF]/10 px-3 py-1 rounded-full mt-2 md:mt-0 w-fit">
@@ -131,6 +131,6 @@ export default function Experience() {
                     </motion.div>
                 )}
             </div>
-        </PageTransition>
+        </section>
     );
 }

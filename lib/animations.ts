@@ -60,3 +60,38 @@ export const staggerChildrenSlow = {
         }
     }
 };
+
+export const hoverScale = {
+    whileHover: { scale: 1.05 },
+    whileTap: { scale: 0.95 },
+    transition: { type: "spring", stiffness: 400, damping: 10 }
+};
+
+export const float = {
+    animate: {
+        y: [0, -10, 0],
+        transition: {
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut" as const
+        }
+    }
+};
+
+export const blurIn = {
+    initial: { opacity: 0, filter: "blur(10px)" },
+    animate: { opacity: 1, filter: "blur(0px)" },
+    transition: { duration: 0.8, ease: "easeOut" }
+};
+
+export const panInLeft = {
+    initial: { opacity: 0, x: -50, scale: 0.95 },
+    animate: { opacity: 1, x: 0, scale: 1 },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+};
+
+export const panInRight = {
+    initial: { opacity: 0, x: 50, scale: 0.95 },
+    animate: { opacity: 1, x: 0, scale: 1 },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+};
