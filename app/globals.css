@@ -120,6 +120,11 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+  }
 }
 
 ::view-transition-old(root), ::view-transition-new(root) {

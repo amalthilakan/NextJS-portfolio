@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import PageTransition from '@/components/PageTransition';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import SuccessModal from '@/components/SuccessModal';
@@ -11,7 +10,7 @@ import { FaGithub, FaLinkedin, FaEnvelope, FaPhone } from 'react-icons/fa';
 import { ContactFormData } from '@/types/contact';
 import { fadeInDown, slideInLeft, slideInRight } from '@/lib/animations';
 
-export default function Contact() {
+export default function ContactSection() {
     const { register, handleSubmit, reset, formState: { errors } } = useForm<ContactFormData>();
     const [isSending, setIsSending] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -36,8 +35,8 @@ export default function Contact() {
         }
     };
     return (
-        <PageTransition>
-            <div className="max-w-6xl mx-auto py-10">
+        <section id="contact" className="py-20">
+            <div className="max-w-4xl mx-auto px-6">
                 <motion.h1
                     className="text-4xl font-bold mb-12 text-center"
                     {...fadeInDown}
@@ -164,6 +163,6 @@ export default function Contact() {
                 </div>
                 <SuccessModal isOpen={showModal} onClose={() => setShowModal(false)} />
             </div>
-        </PageTransition>
+        </section>
     );
 }
