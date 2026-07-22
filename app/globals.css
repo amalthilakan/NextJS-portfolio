@@ -132,14 +132,13 @@
     mix-blend-mode: normal;
 }
 
-* {
-  cursor: none !important;
+/* Force default cursor visibility */
+html, body {
+  cursor: auto !important;
 }
 
-input,
-textarea,
-select {
-  cursor: text !important;
+a, button, [role="button"] {
+  cursor: pointer;
 }
 
 /* Visible focus states for keyboard navigation */

@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
-import { SmoothCursor } from "@/components/ui/smooth-cursor";
 import SmoothScroller from "@/components/SmoothScroller";
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Toaster } from 'react-hot-toast';
@@ -40,19 +39,21 @@ export default function RootLayout({
                   } else {
                     document.documentElement.classList.remove('dark');
                   }
+                  if (document.body) {
+                    document.body.style.cursor = 'auto';
+                  }
                 } catch (e) {}
               })();
             `,
           }}
         />
       </head>
-      <body className={`${inter.className} bg-gray-50 dark:bg-[#0a0a0a] text-gray-900 dark:text-gray-100 min-h-screen flex flex-col cursor-none`}>
+      <body className={`${inter.className} bg-gray-50 dark:bg-[#0a0a0a] text-gray-900 dark:text-gray-100 min-h-screen flex flex-col`}>
         <ErrorBoundary>
           <Toaster position="top-center" toastOptions={{
             style: { background: '#1a1a1a', color: '#fff' },
             error: { duration: 4000 },
           }} />
-          <SmoothCursor />
           <Navbar />
           <SmoothScroller>
             <main className="grow w-full flex flex-col">

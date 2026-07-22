@@ -19,6 +19,7 @@ import ProjectsSection from '@/components/sections/ProjectsSection';
 import SkillsSection from '@/components/sections/SkillsSection';
 import ContactSection from '@/components/sections/ContactSection';
 import { useScroll, useTransform } from 'framer-motion';
+import { useLenis } from 'lenis/react';
 
 export default function Home() {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -65,6 +66,24 @@ export default function Home() {
       className: "hover:bg-[#E1306C] dark:hover:bg-[#E1306C]",
     },
   ];
+
+  const lenis = useLenis();
+
+  const handleHireMeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (lenis) {
+      lenis.scrollTo('#contact', {
+        duration: 2.5,
+        offset: -60,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+    } else {
+      const contactElem = document.getElementById('contact');
+      if (contactElem) {
+        contactElem.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
 
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -124,7 +143,8 @@ export default function Home() {
                 className="inline-block"
               >
                 <Link
-                  href="/contact"
+                  href="#contact"
+                  onClick={handleHireMeClick}
                   className="px-8 py-3 rounded-full bg-[#7C4DFF] text-white font-semibold hover:bg-[#6c42e0] transition-colors flex items-center justify-center gap-2 shadow-lg shadow-[#7C4DFF]/30"
                 >
                   Hire Me <HiArrowRight />
